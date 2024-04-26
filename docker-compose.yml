@@ -67,7 +67,7 @@ services:
             OVERLEAF_EMAIL_SMTP_PORT: 587
             OVERLEAF_EMAIL_SMTP_SECURE: true
             OVERLEAF_EMAIL_SMTP_USER: noreply@angora.space
-            OVERLEAF_EMAIL_SMTP_PASS: WbMY5cwUeiVu5bPLLzSEHHyjrAb3ar
+            OVERLEAF_EMAIL_SMTP_PASS: pass
             OVERLEAF_EMAIL_SMTP_TLS_REJECT_UNAUTH: true
             OVERLEAF_EMAIL_SMTP_IGNORE_TLS: false
             OVERLEAF_EMAIL_SMTP_NAME: noreply@angora.space
