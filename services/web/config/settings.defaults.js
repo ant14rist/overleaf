@@ -697,7 +697,7 @@ module.exports = {
     stepTimeout: parseInt(process.env.SMOKE_TEST_STEP_TIMEOUT || '10000', 10),
   },
 
-  appName: process.env.APP_NAME || 'Overleaf (Community Edition)',
+  appName: process.env.APP_NAME || 'Overleaf (ANGORA Edition)',
 
   adminEmail: process.env.ADMIN_EMAIL || 'placeholder@example.com',
   adminDomains: process.env.ADMIN_DOMAINS
@@ -705,15 +705,15 @@ module.exports = {
     : undefined,
 
   nav: {
-    title: process.env.APP_NAME || 'Overleaf Community Edition',
+    title: process.env.APP_NAME || 'Overleaf ANGORA Edition',
 
     hide_powered_by: process.env.NAV_HIDE_POWERED_BY === 'true',
     left_footer: [],
 
     right_footer: [
       {
-        text: "<i class='fa fa-github-square'></i> Fork on GitHub!",
-        url: 'https://github.com/overleaf/overleaf',
+        text: "Main page",
+        url: 'https://angora.space',
       },
     ],
 

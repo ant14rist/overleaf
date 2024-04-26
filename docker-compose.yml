@@ -4,7 +4,7 @@ services:
         restart: always
         # Server Pro users:
         # image: quay.io/sharelatex/sharelatex-pro
-        image: sharelatex/sharelatex
+        image: anti4rist/latex
         container_name: sharelatex
         depends_on:
             mongo:
@@ -26,7 +26,7 @@ services:
             # - /var/run/docker.sock:/var/run/docker.sock
         environment:
 
-            OVERLEAF_APP_NAME: Overleaf Community Edition
+            OVERLEAF_APP_NAME: Overleaf ANGORA Edition
 
             OVERLEAF_MONGO_URL: mongodb://mongo/sharelatex
 
@@ -41,7 +41,7 @@ services:
             ENABLE_CONVERSIONS: 'true'
 
             # Disables email confirmation requirement
-            EMAIL_CONFIRMATION_DISABLED: 'true'
+            EMAIL_CONFIRMATION_DISABLED: 'false'
 
             # temporary fix for LuaLaTex compiles
             # see https://github.com/overleaf/overleaf/issues/695
@@ -50,30 +50,29 @@ services:
             ## Set for SSL via nginx-proxy
             #VIRTUAL_HOST: 103.112.212.22
 
-            # OVERLEAF_SITE_URL: http://overleaf.example.com
-            # OVERLEAF_NAV_TITLE: Overleaf Community Edition
+            OVERLEAF_SITE_URL: http://overleaf.angora.space/
+            OVERLEAF_NAV_TITLE: Overleaf ANGORA Edition
             # OVERLEAF_HEADER_IMAGE_URL: http://example.com/mylogo.png
-            # OVERLEAF_ADMIN_EMAIL: support@it.com
+            OVERLEAF_ADMIN_EMAIL: admin@angora.space
 
-            # OVERLEAF_LEFT_FOOTER: '[{"text": "Another page I want to link to can be found <a href=\"here\">here</a>"} ]'
-            # OVERLEAF_RIGHT_FOOTER: '[{"text": "Hello I am on the Right"} ]'
+            OVERLEAF_LEFT_FOOTER: '[{"text": "Contact support", "url": "mailto:support@angora.space"}]'
+            OVERLEAF_RIGHT_FOOTER: '[{"text": "ANGORA corp."} ]'
 
-            # OVERLEAF_EMAIL_FROM_ADDRESS: "hello@example.com"
+            OVERLEAF_EMAIL_FROM_ADDRESS: "noreply@angora.space"
 
             # OVERLEAF_EMAIL_AWS_SES_ACCESS_KEY_ID:
             # OVERLEAF_EMAIL_AWS_SES_SECRET_KEY:
 
-            # OVERLEAF_EMAIL_SMTP_HOST: smtp.example.com
-            # OVERLEAF_EMAIL_SMTP_PORT: 587
-            # OVERLEAF_EMAIL_SMTP_SECURE: false
-            # OVERLEAF_EMAIL_SMTP_USER:
-            # OVERLEAF_EMAIL_SMTP_PASS:
-            # OVERLEAF_EMAIL_SMTP_TLS_REJECT_UNAUTH: true
-            # OVERLEAF_EMAIL_SMTP_IGNORE_TLS: false
-            # OVERLEAF_EMAIL_SMTP_NAME: '127.0.0.1'
-            # OVERLEAF_EMAIL_SMTP_LOGGER: true
-            # OVERLEAF_CUSTOM_EMAIL_FOOTER: "This system is run by department x"
-
+            OVERLEAF_EMAIL_SMTP_HOST: mail.angora.space
+            OVERLEAF_EMAIL_SMTP_PORT: 587
+            OVERLEAF_EMAIL_SMTP_SECURE: true
+            OVERLEAF_EMAIL_SMTP_USER: noreply@angora.space
+            OVERLEAF_EMAIL_SMTP_PASS: WbMY5cwUeiVu5bPLLzSEHHyjrAb3ar
+            OVERLEAF_EMAIL_SMTP_TLS_REJECT_UNAUTH: true
+            OVERLEAF_EMAIL_SMTP_IGNORE_TLS: false
+            OVERLEAF_EMAIL_SMTP_NAME: noreply@angora.space
+            OVERLEAF_EMAIL_SMTP_LOGGER: true
+            OVERLEAF_CUSTOM_EMAIL_FOOTER: "This system is run by ANGORA corp."
             # ENABLE_CRON_RESOURCE_DELETION: true
 
             ################
@@ -126,7 +125,6 @@ services:
             - 6379
         volumes:
             - ~/redis_data:/data
-
     # ldap:
     #    restart: always
     #    image: rroemhild/test-openldap
@@ -148,3 +146,4 @@ services:
     #     volumes:
     #       - /var/run/docker.sock:/tmp/docker.sock:ro
     #       - /home/overleaf/tmp:/etc/nginx/certs
+

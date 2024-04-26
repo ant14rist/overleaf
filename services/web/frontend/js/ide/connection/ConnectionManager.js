@@ -138,7 +138,7 @@ export default ConnectionManager = (function () {
           this.connected = false
           return this.$scope.$apply(() => {
             return (this.$scope.state.error =
-              "Unable to connect, please view the <u><a href='/learn/Kb/Connection_problems'>connection problems guide</a></u> to fix the issue.")
+              "The project may take a long time to open. If the project does not open, check the connection or contact <u><a href='mailto:support@angora.space'>support</a></u>.")
           })
         }
       }
@@ -217,7 +217,7 @@ export default ConnectionManager = (function () {
         this.connected = false
         return this.$scope.$apply(() => {
           return (this.$scope.state.error =
-            "Unable to connect, please view the <u><a href='/learn/Kb/Connection_problems'>connection problems guide</a></u> to fix the issue.")
+            "The project may take a long time to open. If the project does not open, check the connection or contact <u><a href='mailto:support@angora.space'>support</a></u>.")
         })
       })
 
