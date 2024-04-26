@@ -12,7 +12,7 @@ export default function FileTreeImportFromUrl() {
   const { t } = useTranslation()
   const { name, setName, validName } = useFileTreeCreateName()
   const { setValid } = useFileTreeCreateForm()
-  const { finishCreatingLinkedFile, error } = useFileTreeActionable()
+  const { finishCreatingLinkedFile, error, inFlight } = useFileTreeActionable()
 
   const [url, setUrl] = useState('')
 
@@ -36,7 +36,10 @@ export default function FileTreeImportFromUrl() {
   // form submission: create a linked file with this name, from this URL
   const handleSubmit = event => {
     event.preventDefault()
-    eventTracking.sendMB('new-file-created', { method: 'url' })
+    eventTracking.sendMB('new-file-created', {
+      method: 'url',
+      extension: name.split('.').length > 1 ? name.split('.').pop() : '',
+    })
     finishCreatingLinkedFile({
       name,
       provider: 'url',
@@ -67,6 +70,7 @@ export default function FileTreeImportFromUrl() {
         label={t('file_name_in_this_project')}
         placeholder="my_file"
         error={error}
+        inFlight={inFlight}
       />
 
       {error && <ErrorMessage error={error} />}

@@ -624,7 +624,7 @@ describe('AuthenticationController', function () {
       beforeEach(function () {
         this.req.session = {
           user: this.user,
-          regenerate: sinon.stub().yields(),
+          destroy: sinon.stub().yields(),
         }
         this.req.user = this.user
         this.AuthenticationController._redirectToLoginOrRegisterPage =
@@ -637,7 +637,7 @@ describe('AuthenticationController', function () {
       })
 
       it('should destroy the current session', function () {
-        this.req.session.regenerate.called.should.equal(true)
+        this.req.session.destroy.called.should.equal(true)
       })
 
       it('should redirect to the register or login page', function () {
@@ -1108,23 +1108,23 @@ describe('AuthenticationController', function () {
     })
   })
 
-  describe('_getRedirectFromSession', function () {
+  describe('getRedirectFromSession', function () {
     it('should get redirect property from session', function () {
       this.req = { session: { postLoginRedirect: '/a?b=c' } }
       expect(
-        this.AuthenticationController._getRedirectFromSession(this.req)
+        this.AuthenticationController.getRedirectFromSession(this.req)
       ).to.equal('/a?b=c')
     })
 
     it('should not allow open redirects', function () {
       this.req = { session: { postLoginRedirect: 'https://evil.com' } }
-      expect(this.AuthenticationController._getRedirectFromSession(this.req)).to
+      expect(this.AuthenticationController.getRedirectFromSession(this.req)).to
         .be.null
     })
 
     it('handle null values', function () {
       this.req = { session: {} }
-      expect(this.AuthenticationController._getRedirectFromSession(this.req)).to
+      expect(this.AuthenticationController.getRedirectFromSession(this.req)).to
         .be.null
     })
   })
@@ -1147,7 +1147,7 @@ describe('AuthenticationController', function () {
     // - clear redirect
     // - issue redir, two ways
     beforeEach(function () {
-      this.AuthenticationController._getRedirectFromSession = sinon
+      this.AuthenticationController.getRedirectFromSession = sinon
         .stub()
         .returns('/some/page')
 
@@ -1181,10 +1181,10 @@ describe('AuthenticationController', function () {
         this.next
       )
       expect(
-        this.AuthenticationController._getRedirectFromSession.callCount
+        this.AuthenticationController.getRedirectFromSession.callCount
       ).to.equal(1)
       expect(
-        this.AuthenticationController._getRedirectFromSession.calledWith(
+        this.AuthenticationController.getRedirectFromSession.calledWith(
           this.req
         )
       ).to.equal(true)

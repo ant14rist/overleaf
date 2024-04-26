@@ -177,7 +177,7 @@ const AuthenticationController = {
         }
 
         const redir =
-          AuthenticationController._getRedirectFromSession(req) || '/project'
+          AuthenticationController.getRedirectFromSession(req) || '/project'
 
         _loginAsyncHandlers(req, user, anonymousAnalyticsId, isNewUser)
         const userId = user._id
@@ -283,7 +283,7 @@ const AuthenticationController = {
               } else if (user) {
                 if (
                   isPasswordReused &&
-                  AuthenticationController._getRedirectFromSession(req) == null
+                  AuthenticationController.getRedirectFromSession(req) == null
                 ) {
                   AuthenticationController.setRedirectInSession(
                     req,
@@ -419,8 +419,9 @@ const AuthenticationController = {
     return function (req, res, next) {
       // check that the session store is returning valid results
       if (req.session && !SessionStoreManager.hasValidationToken(req)) {
-        // force user to update session
-        req.session.regenerate(() => {
+        // Force user to update session by destroying the current one.
+        // A new session will be created on the next request.
+        req.session.destroy(() => {
           // need to destroy the existing session and generate a new one
           // otherwise they will already be logged in when they are redirected
           // to the login page
@@ -613,7 +614,7 @@ const AuthenticationController = {
     if (callback) callback()
   },
 
-  _getRedirectFromSession(req) {
+  getRedirectFromSession(req) {
     let safePath
     const value = _.get(req, ['session', 'postLoginRedirect'])
     if (value) {

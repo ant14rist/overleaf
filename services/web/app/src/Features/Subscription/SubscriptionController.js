@@ -88,7 +88,7 @@ async function plansPage(req, res) {
   const localCcyAssignment = await SplitTestHandler.promises.getAssignment(
     req,
     res,
-    'local-ccy-format'
+    'local-ccy-format-v2'
   )
   const formatCurrency =
     localCcyAssignment.variant === 'enabled'
@@ -143,7 +143,7 @@ async function userSubscriptionPage(req, res) {
   const localCcyAssignment = await SplitTestHandler.promises.getAssignment(
     req,
     res,
-    'local-ccy-format'
+    'local-ccy-format-v2'
   )
 
   const results =
@@ -261,7 +261,7 @@ async function interstitialPaymentPage(req, res) {
     const localCcyAssignment = await SplitTestHandler.promises.getAssignment(
       req,
       res,
-      'local-ccy-format'
+      'local-ccy-format-v2'
     )
 
     res.render('subscriptions/interstitial-payment', {
@@ -296,7 +296,7 @@ async function successfulSubscription(req, res) {
   const localCcyAssignment = await SplitTestHandler.promises.getAssignment(
     req,
     res,
-    'local-ccy-format'
+    'local-ccy-format-v2'
   )
   const { personalSubscription } =
     await SubscriptionViewModelBuilder.promises.buildUsersSubscriptionViewModel(
@@ -488,64 +488,6 @@ function recurlyCallback(req, res, next) {
   }
 }
 
-function renderUpgradeToAnnualPlanPage(req, res, next) {
-  const user = SessionManager.getSessionUser(req.session)
-  LimitationsManager.userHasV2Subscription(
-    user,
-    function (err, hasSubscription, subscription) {
-      let planName
-      if (err) {
-        return next(err)
-      }
-      const planCode = subscription
-        ? subscription.planCode.toLowerCase()
-        : undefined
-      if ((planCode ? planCode.indexOf('annual') : undefined) !== -1) {
-        planName = 'annual'
-      } else if ((planCode ? planCode.indexOf('student') : undefined) !== -1) {
-        planName = 'student'
-      } else if (
-        (planCode ? planCode.indexOf('collaborator') : undefined) !== -1
-      ) {
-        planName = 'collaborator'
-      }
-      if (hasSubscription) {
-        res.render('subscriptions/upgradeToAnnual', {
-          title: 'Upgrade to annual',
-          planName,
-        })
-      } else {
-        res.redirect('/user/subscription/plans')
-      }
-    }
-  )
-}
-
-function processUpgradeToAnnualPlan(req, res, next) {
-  const user = SessionManager.getSessionUser(req.session)
-  const { planName } = req.body
-  const couponCode = Settings.coupon_codes.upgradeToAnnualPromo[planName]
-  const annualPlanName = `${planName}-annual`
-  logger.debug(
-    { userId: user._id, planName: annualPlanName },
-    'user is upgrading to annual billing with discount'
-  )
-  return SubscriptionHandler.updateSubscription(
-    user,
-    annualPlanName,
-    couponCode,
-    function (err) {
-      if (err) {
-        OError.tag(err, 'error updating subscription', {
-          user_id: user._id,
-        })
-        return next(err)
-      }
-      res.sendStatus(200)
-    }
-  )
-}
-
 async function extendTrial(req, res) {
   const user = SessionManager.getSessionUser(req.session)
   const { subscription } =
@@ -684,8 +626,6 @@ module.exports = {
   updateAccountEmailAddress,
   reactivateSubscription,
   recurlyCallback,
-  renderUpgradeToAnnualPlanPage,
-  processUpgradeToAnnualPlan,
   extendTrial: expressify(extendTrial),
   recurlyNotificationParser,
   refreshUserFeatures: expressify(refreshUserFeatures),
